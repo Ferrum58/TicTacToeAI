@@ -5,7 +5,7 @@ public static void main(String[] args) {
     SwingUtilities.invokeLater(new Runnable() {
         public void run() {
             ticTacToeGUI game = new ticTacToeGUI();
-            game.setVisible(true:);
+            game.setVisible(true);
         }
     });
 }
