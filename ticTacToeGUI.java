@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class ticTacToeGUI extends JFrame {
     private JButton[][] buttons = new JButton[3][3];
-    private char[][] board = new char[3][3];
+    private String[][] board = new String[3][3];
     
     public ticTacToeGUI() {
         setTitle("Tic-Tac-Toe");
@@ -13,8 +13,8 @@ public class ticTacToeGUI extends JFrame {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                board[i][j] = ' ';
-                buttons[i][j] = new JButton("");
+                board[i][j] = " ";
+                buttons[i][j] = new JButton(board[i][j]);
                 add(buttons[i][j]);
 
             }
