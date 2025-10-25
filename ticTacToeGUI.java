@@ -49,7 +49,7 @@ public class ticTacToeGUI extends JFrame {
             }
 
             if (checkDraw()) {
-                JOptionPane.showMessageDialog(this, "It's a DRAW!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "It's a DRAW!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
                 gameOver = true;
                 return;
             }
