@@ -7,9 +7,11 @@ public class ticTacToeGUI extends JFrame {
     private String[][] board = new String[3][3];
     private String currentPlayer = "X";
     private boolean gameOver = false;
-;    
+    private miniMaxAI ai = new miniMaxAI();  
+    private boolean playerTurn = true;       
+    
     public ticTacToeGUI() {
-        setTitle("Tic-Tac-Toe");
+        setTitle("Tic-Tac-Toe vs AI");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400,450);
         setLayout(new BorderLayout());
@@ -52,12 +54,12 @@ public class ticTacToeGUI extends JFrame {
     
     private void handleClick(int row, int col) {
 
-        if (board[row][col].equals(" ") && !gameOver) {
-            board[row][col] = currentPlayer;
-            buttons[row][col].setText(currentPlayer);
+        if (board[row][col].equals(" ") && !gameOver && playerTurn) {  
+            board[row][col] = "X";  
+            buttons[row][col].setText("X"); 
 
-            if (checkWinner(currentPlayer)) {
-                JOptionPane.showMessageDialog(this, currentPlayer + " WINS!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+            if (checkWinner("X")) {  
+                JOptionPane.showMessageDialog(this, "YOU WIN!", "Game Over", JOptionPane.INFORMATION_MESSAGE);  // CHANGE THIS LINE
                 gameOver = true;
                 return;
             }
@@ -67,12 +69,39 @@ public class ticTacToeGUI extends JFrame {
                 gameOver = true;
                 return;
             }
-            if (currentPlayer.equals("X")) {
-                currentPlayer = "O";
-            } else {
-                currentPlayer = "X";
+            
+            playerTurn = false;
+            Timer timer = new Timer(500, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    makeAIMove();
+                }
+            });
+            timer.setRepeats(false);
+            timer.start();
+        }
+    }
+    
+    private void makeAIMove() {
+        int[] move = ai.findBestMove(board);
+        
+        if (move[0] != -1) {
+            board[move[0]][move[1]] = "O";
+            buttons[move[0]][move[1]].setText("O");
+            
+            if (checkWinner("O")) {
+                JOptionPane.showMessageDialog(this, "AI WINS!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                gameOver = true;
+                return;
+            }
+            
+            if (checkDraw()) {
+                JOptionPane.showMessageDialog(this, "It's a DRAW!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                gameOver = true;
+                return;
             }
         }
+        
+        playerTurn = true;
     }
 
     private boolean checkWinner(String player) {
@@ -112,13 +141,12 @@ public class ticTacToeGUI extends JFrame {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j].equals(" ")) {
-                    return false; // found empty space (not a draw)
+                    return false;
                 }
             }
         }
         return true;
     }
-    // reset game method
     private void resetGame() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -128,5 +156,6 @@ public class ticTacToeGUI extends JFrame {
         }
         currentPlayer = "X"; // reset game state
         gameOver = false;
+        playerTurn = true;  
     }
 }
