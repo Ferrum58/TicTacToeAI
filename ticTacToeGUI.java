@@ -11,8 +11,11 @@ public class ticTacToeGUI extends JFrame {
     public ticTacToeGUI() {
         setTitle("Tic-Tac-Toe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400,400);
-        setLayout(new GridLayout(3,3));
+        setSize(400,450);
+        setLayout(new BorderLayout());
+
+        JPanel boardPanel = new JPanel();
+        boardPanel.setLayout(new GridLayout(3,3));
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -29,9 +32,20 @@ public class ticTacToeGUI extends JFrame {
                         handleClick(row, col);
                     }
                 });
-                add(buttons[i][j]);
+                boardPanel.add(buttons[i][j]);
             }
         }
+
+        add(boardPanel, BorderLayout.CENTER);
+
+        JButton resetButton = new JButton("New Game");
+        resetButton.setFont(new Font("Arial", Font.BOLD, 16));
+        resetButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                resetGame();
+            }
+        });
+        add(resetButton, BorderLayout.SOUTH); // add reset button to bottom
 
         setLocationRelativeTo(null);
     }
@@ -103,5 +117,16 @@ public class ticTacToeGUI extends JFrame {
             }
         }
         return true;
+    }
+    // reset game method
+    private void resetGame() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = " ";
+                buttons[i][j].setText(" ");
+            }
+        }
+        currentPlayer = "X"; // reset game state
+        gameOver = false;
     }
 }
